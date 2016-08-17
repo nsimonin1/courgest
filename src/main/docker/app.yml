@@ -1,0 +1,22 @@
+version: '2'
+services:
+    courrier-app:
+        image: courrier
+        external_links:
+            - courrier-mysql:mysql
+            - courrier-elasticsearch:elasticsearch
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/courrier?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+        ports:
+            - 8080:8080
+    courrier-mysql:
+        extends:
+            file: mysql.yml
+            service: courrier-mysql
+    courrier-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: courrier-elasticsearch
