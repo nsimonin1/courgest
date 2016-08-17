@@ -2,7 +2,7 @@ package org.courrier.web.rest;
 
 import org.courrier.security.jwt.JWTConfigurer;
 import org.courrier.security.jwt.TokenProvider;
-import org.courrier.web.rest.dto.LoginDTO;
+import org.courrier.web.rest.vm.LoginVM;
 
 import java.util.Collections;
 
@@ -32,15 +32,15 @@ public class UserJWTController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<?> authorize(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response) {
+    public ResponseEntity<?> authorize(@Valid @RequestBody LoginVM loginVM, HttpServletResponse response) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+            new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());
 
         try {
             Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            boolean rememberMe = (loginDTO.isRememberMe() == null) ? false : loginDTO.isRememberMe();
+            boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
             String jwt = tokenProvider.createToken(authentication, rememberMe);
             response.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
             return ResponseEntity.ok(new JWTToken(jwt));

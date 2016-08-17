@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "3.5.1",
+    "jhipsterVersion": "3.6.0",
     "baseName": "courrier",
     "packageName": "org.courrier",
     "packageFolder": "org/courrier",
